@@ -1,37 +1,22 @@
 <html>
-  <!--
-  Example PHP to load the CPU. $num corresponds to approximately the number 
-  of seconds you want to do work for, depending on machine size
-  -->
-
-  <head>
-    <title>VM Scale Set CPU load example</title>
-  </head>
-
+  <!-- Demo to load the CPU for a number of seconds -->
+  <head><title>CPU load demo</title></head>
   <body>
     <br/><br/>
-    <?php $hostname = gethostname(); ?>
-
     <center>
-      <h1>Scale Set App running on <?php echo "$hostname" ?> is doing work..</h1>
+      <h1>CPU load demo</h1>
       <br/><br/>
-
       <?php
-      ob_flush();
-      flush();
-      set_time_limit(0);
-    
-      if ($_SERVER['REQUEST_METHOD'] == "GET")
-      {
+        error_reporting(E_NONE);
         $num = $_GET["num"];
-        for ($x = 0; $x <= $num * 3900000; $x++)
+        echo "$num seconds\n";
+        set_time_limit($num);
+        for ($x = 0; $x <= $num * 1000; $x++)
         {
-          $var = $num+1;
+          $x = tan(M_LNPI + log(ceil(M_PI * M_LNPI + 100))); 
         }
-      }
       ?>
-
-      <h1>Processing complete</h1>
+      <h1>Completed</h1>
     </center>
   </body>
 </html>

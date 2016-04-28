@@ -1,9 +1,9 @@
 <html>
-  <head><title>Scale Set Autoscale demo app</title></head>
+  <head><title>CPU load demo</title></head>
   <body>
     <?php $hostname = gethostname(); ?>
     <center>
-    <h1>Scale Set App - <?php echo "$hostname";?></h1>
+    <h1>CPU load demo (<?php echo "$hostname"; ?>)</h1>
     </center>
     <br/><br/><br/>
     <ul><ul><ul>
@@ -12,5 +12,5 @@
       <input type="submit" value="Do work">
     </form>
     </ul></ul></ul>
-  </body>
+   </body>
 </html>
