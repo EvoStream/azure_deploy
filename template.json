@@ -81,9 +81,9 @@
     "wadcfgxend": "[concat('\"><MetricAggregation scheduledTransferPeriod=\"PT1H\"/><MetricAggregation scheduledTransferPeriod=\"PT1M\"/></Metrics></DiagnosticMonitorConfiguration></WadCfg>')]",
     "osType": {
       "publisher": "evostream-inc",
-      "offer": "offer101",
-      "sku": "sku101",
-      "version": "1.0.0"
+      "offer": "evostream-media-server",
+      "sku": "ems-1_7_0-ubuntu",
+      "version": "1.0.17"
     },
     "imageReference":"[variables('osType')]"
   },
@@ -258,9 +258,9 @@
       "type": "Microsoft.Compute/virtualMachineScaleSets",
       "name":"[parameters('vmssName')]",
       "plan": {
-        "name": "sku101",
+        "name": "ems-1_7_0-ubuntu",
         "publisher": "evostream-inc",
-        "product": "offer101"
+        "product": "evostream-media-server"
       },
       "location": "[resourceGroup().location]",
       "apiVersion":"[variables('computeApi')]",

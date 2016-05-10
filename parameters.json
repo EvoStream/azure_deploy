@@ -6,19 +6,19 @@
       "value": "Standard_A0"
     },
     "ubuntuSKU": {
-      "value": "sku101"
+      "value": "ems-1_7_0-ubuntu"
     },
     "vmssName": {
-      "value": "vmss101"
+      "value": "vmss"
     },
     "instanceCount": {
-      "value": 2
+      "value": 1
     },
     "adminUsername": {
-      "value": "admin101"
+      "value": "admin"
     },
     "adminPassword": {
-      "value": "password101"
+      "value": "password"
     }
   }
 }
