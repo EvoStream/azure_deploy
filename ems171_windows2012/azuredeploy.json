@@ -32,7 +32,7 @@
     "imagePublisher": "evostream-inc",
     "imageOffer": "evostream-media-server",
     "imageSku": "ems-1_7_1-windows",
-    "imageVersion": "1.0.1",
+    "imageVersion": "1.0.0",
     "OSDiskName": "ems171osdisk",
     "nicName": "ems171nic",
     "addressPrefix": "10.0.0.0/16",
@@ -186,11 +186,11 @@
         "typeHandlerVersion": "1.7",
         "settings": {
           "fileUris": [
-	    "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/ems171_windows/initialize.bat"
+	    "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/ems171_windows2012/initialize.bat"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('initialize.bat ', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('initialize.bat ', parameters('adminUsername'), ' ', parameters('adminPassword'))]"
         }
       }
     }

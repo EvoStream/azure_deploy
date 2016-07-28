@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "storageAccountNamePrefix": {
-      "value": "ems171storage"
+      "value": "ems171sa"
     },
     "adminUsername": {
       "value": "ems171user"
     },
     "adminPassword": {
-      "value": "ems171pass"
+      "value": "ems171PA$$"
     },
     "dnsLabelPrefix": {
       "value": "ems171dns"
