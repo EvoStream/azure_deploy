@@ -43,7 +43,7 @@
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
     "vmName": "ems171vm",
-    "vmSize": "Standard_A2",
+    "vmSize": "Standard_A0",
     "virtualNetworkName": "ems171vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
