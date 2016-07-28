@@ -190,7 +190,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('initialize.bat ', parameters('adminUsername'), ' ', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('cmd /c \"initialize.bat ', parameters('adminUsername'), ' ', parameters('adminPassword'), '\"')]"
         }
       }
     }
