@@ -190,7 +190,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'))]"
+          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'), ' > temp.txt')]"
         }
       }
     }
