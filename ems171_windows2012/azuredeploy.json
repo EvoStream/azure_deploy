@@ -32,19 +32,19 @@
     "imagePublisher": "evostream-inc",
     "imageOffer": "evostream-media-server",
     "imageSku": "ems-1_7_1-windows",
-    "imageVersion": "1.0.0",
-    "OSDiskName": "ems171osdisk",
-    "nicName": "ems171nic",
+    "imageVersion": "1.0.1",
+    "OSDiskName": "win171osdisk",
+    "nicName": "win171nic",
     "addressPrefix": "10.0.0.0/16",
-    "subnetName": "ems171subnet",
+    "subnetName": "win171subnet",
     "subnetPrefix": "10.0.0.0/24",
     "storageAccountType": "Standard_LRS",
-    "publicIPAddressName": "ems171pip",
+    "publicIPAddressName": "win171pip",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "ems171vm",
+    "vmName": "win171vm",
     "vmSize": "Standard_A0",
-    "virtualNetworkName": "ems171vnet",
+    "virtualNetworkName": "win171vnet",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "apiVersion": "2015-06-15"
@@ -186,11 +186,12 @@
         "typeHandlerVersion": "1.7",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/ems171_windows2012/initialize.rb"
+            "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/ems171_windows2012/initialize.ps1",
+            "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/ems171_windows2012/activate.rb"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('ruby initialize.rb ', parameters('adminUsername'), ' > temp.txt')]"
+          "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File initialize.ps1"
         }
       }
     }

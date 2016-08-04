@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "storageAccountNamePrefix": {
-      "value": "ems171sa"
+      "value": "win171sa"
     },
     "adminUsername": {
-      "value": "ems171user"
+      "value": "winadmin"
     },
     "adminPassword": {
-      "value": "ems171PA$$"
+      "value": "winP4$$"
     },
     "dnsLabelPrefix": {
-      "value": "ems171dns"
+      "value": "win171dns"
     }
   }
 }
