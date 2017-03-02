@@ -109,7 +109,7 @@
   "variables": {
     "customScriptsFolder1": "[parameters('customScriptsFolder')]",
     "apiProxy": "apiproxy",
-    "namingInfix": "[toLower(substring(concat(parameters('vmssName'), uniqueString(resourceGroup().id)), 0, 9))]",
+    "namingInfix": "[toLower(substring(concat(parameters('vmssName'), parameters('uniqueSuffix')), 0, 9))]",
     "jumpBoxName": "[concat(variables('namingInfix'), 'oo')]",
     "jumpBoxSAName": "[concat(uniqueString(concat(resourceGroup().id, variables('newStorageAccountSuffix'), '1234')), 'oosa')]",
     "jumpBoxOSDiskName": "[concat(variables('jumpBoxName'), 'osdisk')]",

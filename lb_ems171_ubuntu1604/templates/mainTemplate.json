@@ -9,13 +9,6 @@
         "description": "Size of VMs in the Origin & Edge Scale Sets and in the Streams Manager."
       }
     },
-    "uniqueSuffix": {
-      "type": "string",
-      "defaultValue": "abc1",
-      "metadata": {
-        "description": "Unique suffix for resource names."
-      }
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -58,28 +51,28 @@
     "baseUrl": "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/lb_ems171_ubuntu1604/",
     "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
     "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
-    "uniqueSuffix1": "[parameters('uniqueSuffix')]",
+    "uniqueSuffix1": "[substring(uniqueString(concat(resourceGroup().id, variables('baseUrl'))), 0, 4)]",
     "adminUsername1": "[parameters('adminUsername')]",
     "adminPassword1": "[parameters('adminPassword')]",
     "httpPassword1": "[parameters('httpPassword')]",
     "sshKey1": "[parameters('sshKey')]",
-    "vmssName1": "[concat('vmss', parameters('uniqueSuffix'))]",
+    "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
     "instanceCount1": 2,
     "vmSize1": "[parameters('vmSize')]",
     "location1": "[parameters('location')]",
     "vneteo": {
-      "name": "[concat('vneteo-', variables('location1'), '-', parameters('uniqueSuffix'))]",
+      "name": "[concat('vneteo-', variables('location1'), '-', variables('uniqueSuffix1'))]",
       "addressSpacePrefix": "10.10.0.0/24",
       "subnetName": "subnet1",
       "subnetPrefix": "10.10.0.0/24",
-      "peeringName": "[concat('peereo-', variables('location1'), '-', parameters('uniqueSuffix'))]"
+      "peeringName": "[concat('peereo-', variables('location1'), '-', variables('uniqueSuffix1'))]"
     },
     "vnetsm": {
-      "name": "[concat('vnetsm-', variables('location1'), '-', parameters('uniqueSuffix'))]",
+      "name": "[concat('vnetsm-', variables('location1'), '-', variables('uniqueSuffix1'))]",
       "addressSpacePrefix": "10.20.0.0/24",
       "subnetName": "subnet1",
       "subnetPrefix": "10.20.0.0/24",
-      "peeringName": "[concat('peersm-', variables('location1'), '-', parameters('uniqueSuffix'))]"
+      "peeringName": "[concat('peersm-', variables('location1'), '-', variables('uniqueSuffix1'))]"
     },
     "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
   },
