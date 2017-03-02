@@ -23,13 +23,6 @@
       },
       "maxLength": 9
     },
-    "instanceCount": {
-      "type": "int",
-      "metadata": {
-        "description": "Number of VM instances (5 or less)."
-      },
-      "maxValue": 5
-    },
     "uniqueSuffix": {
       "type": "string",
       "defaultValue": "",
@@ -643,7 +636,7 @@
       "sku": {
         "name": "[parameters('vmSize')]",
         "tier": "Standard",
-        "capacity": "[parameters('instanceCount')]"
+        "capacity": "[parameters('initialEdgeCount')]"
       },
       "properties": {
         "overprovision": false,

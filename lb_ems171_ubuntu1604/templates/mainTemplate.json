@@ -66,7 +66,6 @@
     "httpPassword1": "[parameters('httpPassword')]",
     "sshKey1": "[parameters('sshKey')]",
     "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
-    "instanceCount1": 2,
     "vmSize1": "[parameters('vmSize')]",
     "location1": "[parameters('location')]",
     "vneteo": {
@@ -255,9 +254,6 @@
           },
           "vmssName": {
             "value": "[concat(variables('vmssName1'), 'e')]"
-          },
-          "instanceCount": {
-            "value": "[variables('instanceCount1')]"
           },
           "vmSize": {
             "value": "[variables('vmSize1')]"
