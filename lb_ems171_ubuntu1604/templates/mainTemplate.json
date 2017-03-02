@@ -55,7 +55,7 @@
     }
   },
   "variables": {
-    "baseUrl": "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/lb_ems171_ubuntu1604/templates/",
+    "baseUrl": "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/lb_ems171_ubuntu1604/",
     "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
     "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
     "uniqueSuffix1": "[parameters('uniqueSuffix')]",
