@@ -68,19 +68,11 @@
     "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
     "vmSize1": "[parameters('vmSize')]",
     "location1": "[parameters('location')]",
-    "vneteo": {
-      "name": "[concat('vneteo-', variables('location1'), '-', variables('uniqueSuffix1'))]",
+    "vnetone": {
+      "name": "[concat('vnetone-', variables('location1'), '-', variables('uniqueSuffix1'))]",
       "addressSpacePrefix": "10.10.0.0/24",
       "subnetName": "subnet1",
-      "subnetPrefix": "10.10.0.0/24",
-      "peeringName": "[concat('peereo-', variables('location1'), '-', variables('uniqueSuffix1'))]"
-    },
-    "vnetsm": {
-      "name": "[concat('vnetsm-', variables('location1'), '-', variables('uniqueSuffix1'))]",
-      "addressSpacePrefix": "10.20.0.0/24",
-      "subnetName": "subnet1",
-      "subnetPrefix": "10.20.0.0/24",
-      "peeringName": "[concat('peersm-', variables('location1'), '-', variables('uniqueSuffix1'))]"
+      "subnetPrefix": "10.10.0.0/24"
     },
     "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
   },
@@ -88,90 +80,23 @@
     {
       "apiVersion": "2016-10-01",
       "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vneteo').name]",
+      "name": "[variables('vnetone').name]",
       "location": "[variables('location1')]",
-      "comments": "This is the first vnet",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('vneteo').addressSpacePrefix]"
+            "[variables('vnetone').addressSpacePrefix]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('vneteo').subnetName]",
+            "name": "[variables('vnetone').subnetName]",
             "properties": {
-              "addressPrefix": "[variables('vneteo').subnetPrefix]"
+              "addressPrefix": "[variables('vnetone').subnetPrefix]"
             }
           }
         ]
-      },
-      "resources": [
-        {
-          "apiVersion": "2016-06-01",
-          "type": "virtualNetworkPeerings",
-          "name": "[variables('vneteo').peeringName]",
-          "location": "[variables('location1')]",
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
-          ],
-          "comments": "This is the peering from vnet 1 to vnet 2",
-          "properties": {
-            "allowVirtualNetworkAccess": true,
-            "allowForwardedTraffic": false,
-            "allowGatewayTransit": false,
-            "useRemoteGateways": false,
-            "remoteVirtualNetwork": {
-              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetsm').name)]"
-            }
-          }
-        }
-      ]
-    },
-    {
-      "apiVersion": "2016-10-01",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetsm').name]",
-      "location": "[variables('location1')]",
-      "comments": "This is the second vnet",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('vnetsm').addressSpacePrefix]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[variables('vnetsm').subnetName]",
-            "properties": {
-              "addressPrefix": "[variables('vnetsm').subnetPrefix]"
-            }
-          }
-        ]
-      },
-      "resources": [
-        {
-          "apiVersion": "2016-06-01",
-          "type": "virtualNetworkPeerings",
-          "name": "[variables('vnetsm').peeringName]",
-          "location": "[variables('location1')]",
-          "dependsOn": [
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
-            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
-          ],
-          "comments": "This is the peering from vnet 2 to vnet 1",
-          "properties": {
-            "allowVirtualNetworkAccess": true,
-            "allowForwardedTraffic": false,
-            "allowGatewayTransit": false,
-            "useRemoteGateways": false,
-            "remoteVirtualNetwork": {
-              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vneteo').name)]"
-            }
-          }
-        }
-      ]
+      }
     },
     {
       "name": "managerSetup",
@@ -200,16 +125,16 @@
             "value": "[variables('vmSize1')]"
           },
           "vnetName": {
-            "value": "[variables('vnetsm').name]"
+            "value": "[variables('vnetone').name]"
           },
           "subnetName": {
-            "value": "[variables('vnetsm').subnetName]"
+            "value": "[variables('vnetone').subnetName]"
           },
           "addressPrefix": {
-            "value": "[variables('vnetsm').addressSpacePrefix]"
+            "value": "[variables('vnetone').addressSpacePrefix]"
           },
           "subnetPrefix": {
-            "value": "[variables('vnetsm').subnetPrefix]"
+            "value": "[variables('vnetone').subnetPrefix]"
           },
           "emsLicenseUrl": {
             "value": "[variables('emsLicenseUrl1')]"
@@ -259,16 +184,16 @@
             "value": "[variables('vmSize1')]"
           },
           "vnetName": {
-            "value": "[variables('vneteo').name]"
+            "value": "[variables('vnetone').name]"
           },
           "subnetName": {
-            "value": "[variables('vneteo').subnetName]"
+            "value": "[variables('vnetone').subnetName]"
           },
           "addressPrefix": {
-            "value": "[variables('vneteo').addressSpacePrefix]"
+            "value": "[variables('vnetone').addressSpacePrefix]"
           },
           "subnetPrefix": {
-            "value": "[variables('vneteo').subnetPrefix]"
+            "value": "[variables('vnetone').subnetPrefix]"
           },
           "emsLicenseUrl": {
             "value": "[variables('emsLicenseUrl1')]"
