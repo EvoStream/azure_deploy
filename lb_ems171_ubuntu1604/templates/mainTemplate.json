@@ -1,0 +1,297 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_D1_v2",
+      "metadata": {
+        "description": "Size of VMs in the Origin & Edge Scale Sets and in the Streams Manager."
+      }
+    },
+    "uniqueSuffix": {
+      "type": "string",
+      "defaultValue": "abc1",
+      "metadata": {
+        "description": "Unique suffix for resource names."
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Admin username on all VMs."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Admin password on all VMs."
+      }
+    },
+    "httpPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "HTTP password for API commands."
+      }
+    },
+    "sshKey": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "SSH public key for all VMs."
+      }
+    },
+    "emsLicenseUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "EMS license URL."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup.Location()]",
+      "metadata": {
+        "description": "Deployment location."
+      }
+    }
+  },
+  "variables": {
+    "baseUrl": "https://raw.githubusercontent.com/EvoStream/azure_deploy/master/lb_ems171_ubuntu1604/templates/",
+    "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
+    "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
+    "uniqueSuffix1": "[parameters('uniqueSuffix')]",
+    "adminUsername1": "[parameters('adminUsername')]",
+    "adminPassword1": "[parameters('adminPassword')]",
+    "httpPassword1": "[parameters('httpPassword')]",
+    "sshKey1": "[parameters('sshKey')]",
+    "vmssName1": "[concat('vmss', parameters('uniqueSuffix'))]",
+    "instanceCount1": 2,
+    "vmSize1": "[parameters('vmSize')]",
+    "location1": "[parameters('location')]",
+    "vneteo": {
+      "name": "[concat('vneteo-', variables('location1'), '-', parameters('uniqueSuffix'))]",
+      "addressSpacePrefix": "10.10.0.0/24",
+      "subnetName": "subnet1",
+      "subnetPrefix": "10.10.0.0/24",
+      "peeringName": "[concat('peereo-', variables('location1'), '-', parameters('uniqueSuffix'))]"
+    },
+    "vnetsm": {
+      "name": "[concat('vnetsm-', variables('location1'), '-', parameters('uniqueSuffix'))]",
+      "addressSpacePrefix": "10.20.0.0/24",
+      "subnetName": "subnet1",
+      "subnetPrefix": "10.20.0.0/24",
+      "peeringName": "[concat('peersm-', variables('location1'), '-', parameters('uniqueSuffix'))]"
+    },
+    "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2016-10-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('vneteo').name]",
+      "location": "[variables('location1')]",
+      "comments": "This is the first vnet",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vneteo').addressSpacePrefix]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vneteo').subnetName]",
+            "properties": {
+              "addressPrefix": "[variables('vneteo').subnetPrefix]"
+            }
+          }
+        ]
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-06-01",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('vneteo').peeringName]",
+          "location": "[variables('location1')]",
+          "dependsOn": [
+            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
+            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
+          ],
+          "comments": "This is the peering from vnet 1 to vnet 2",
+          "properties": {
+            "allowVirtualNetworkAccess": true,
+            "allowForwardedTraffic": false,
+            "allowGatewayTransit": false,
+            "useRemoteGateways": false,
+            "remoteVirtualNetwork": {
+              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnetsm').name)]"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "2016-10-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('vnetsm').name]",
+      "location": "[variables('location1')]",
+      "comments": "This is the second vnet",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vnetsm').addressSpacePrefix]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vnetsm').subnetName]",
+            "properties": {
+              "addressPrefix": "[variables('vnetsm').subnetPrefix]"
+            }
+          }
+        ]
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-06-01",
+          "type": "virtualNetworkPeerings",
+          "name": "[variables('vnetsm').peeringName]",
+          "location": "[variables('location1')]",
+          "dependsOn": [
+            "[concat('Microsoft.Network/virtualNetworks/', variables('vneteo').name)]",
+            "[concat('Microsoft.Network/virtualNetworks/', variables('vnetsm').name)]"
+          ],
+          "comments": "This is the peering from vnet 2 to vnet 1",
+          "properties": {
+            "allowVirtualNetworkAccess": true,
+            "allowForwardedTraffic": false,
+            "allowGatewayTransit": false,
+            "useRemoteGateways": false,
+            "remoteVirtualNetwork": {
+              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('vneteo').name)]"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "managerSetup",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templatesFolder'), 'nestedtemplates/manager.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "uniqueSuffix": {
+            "value": "[concat(variables('uniqueSuffix1'), 'm')]"
+          },
+          "adminUsername": {
+            "value": "[variables('adminUsername1')]"
+          },
+          "adminPassword": {
+            "value": "[variables('adminPassword1')]"
+          },
+          "httpPassword": {
+            "value": "[variables('httpPassword1')]"
+          },
+          "sshKey": {
+            "value": "[variables('sshKey1')]"
+          },
+          "vmSize": {
+            "value": "[variables('vmSize1')]"
+          },
+          "vnetName": {
+            "value": "[variables('vnetsm').name]"
+          },
+          "subnetName": {
+            "value": "[variables('vnetsm').subnetName]"
+          },
+          "addressPrefix": {
+            "value": "[variables('vnetsm').addressSpacePrefix]"
+          },
+          "subnetPrefix": {
+            "value": "[variables('vnetsm').subnetPrefix]"
+          },
+          "emsLicenseUrl": {
+            "value": "[variables('emsLicenseUrl1')]"
+          },
+          "customScriptsFolder": {
+            "value": "[variables('customScriptsFolder')]"
+          },
+          "location": {
+            "value": "[variables('location1')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "streamersSetup",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "Microsoft.Resources/deployments/managerSetup"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(variables('templatesFolder'), 'nestedtemplates/streamers.json')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "uniqueSuffix": {
+            "value": "[concat(variables('uniqueSuffix1'), 'z')]"
+          },
+          "smPublicIp": {
+            "value": "[reference('managerSetup').outputs.publicIpAddressSM.value]"
+          },
+          "adminUsername": {
+            "value": "[variables('adminUsername1')]"
+          },
+          "adminPassword": {
+            "value": "[variables('adminPassword1')]"
+          },
+          "httpPassword": {
+            "value": "[variables('httpPassword1')]"
+          },
+          "sshKey": {
+            "value": "[variables('sshKey1')]"
+          },
+          "vmssName": {
+            "value": "[concat(variables('vmssName1'), 'e')]"
+          },
+          "instanceCount": {
+            "value": "[variables('instanceCount1')]"
+          },
+          "vmSize": {
+            "value": "[variables('vmSize1')]"
+          },
+          "vnetName": {
+            "value": "[variables('vneteo').name]"
+          },
+          "subnetName": {
+            "value": "[variables('vneteo').subnetName]"
+          },
+          "addressPrefix": {
+            "value": "[variables('vneteo').addressSpacePrefix]"
+          },
+          "subnetPrefix": {
+            "value": "[variables('vneteo').subnetPrefix]"
+          },
+          "emsLicenseUrl": {
+            "value": "[variables('emsLicenseUrl1')]"
+          },
+          "customScriptsFolder": {
+            "value": "[variables('customScriptsFolder')]"
+          },
+          "location": {
+            "value": "[variables('location1')]"
+          }
+        }
+      }
+    }
+  ]
+}
