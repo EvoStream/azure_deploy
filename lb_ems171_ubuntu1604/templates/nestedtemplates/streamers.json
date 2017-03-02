@@ -92,6 +92,22 @@
         "description": "custom scripts folder."
       }
     },
+    "initialEdgeCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Initial number of Edge VMs (2 to 4)."
+      },
+      "minValue": 2,
+      "maxValue": 4
+    },
+    "maxEdgeCount": {
+      "type": "int",
+      "metadata": {
+        "description": "Maximum number of Edge VMs (4 to 10)."
+      },
+      "minValue": 4,
+      "maxValue": 10
+    },
     "location": {
       "type": "string",
       "metadata": {
@@ -738,8 +754,8 @@
             "name": "Profile1",
             "capacity": {
               "minimum": 2,
-              "maximum": 5,
-              "default": 2
+              "maximum": "[parameters('maxEdgeCount')]",
+              "default": "[parameters('initialEdgeCount')]"
             },
             "rules": [
               {
