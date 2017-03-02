@@ -18,14 +18,12 @@
     },
     "adminUsername": {
       "type": "string",
-      "defaultValue": "",
       "metadata": {
         "description": "Admin username on all VMs."
       }
     },
     "adminPassword": {
       "type": "securestring",
-      "defaultValue": "",
       "metadata": {
         "description": "Admin password on all VMs."
       }
@@ -38,7 +36,6 @@
     },
     "sshKey": {
       "type": "string",
-      "defaultValue": "",
       "metadata": {
         "description": "SSH public key for all VMs."
       }
@@ -51,7 +48,7 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "[resourceGroup.Location()]",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Deployment location."
       }
