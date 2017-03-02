@@ -15,12 +15,6 @@
         "description": "Admin username on all VMs."
       }
     },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password on all VMs."
-      }
-    },
     "httpPassword": {
       "type": "securestring",
       "metadata": {
@@ -53,7 +47,6 @@
     "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
     "uniqueSuffix1": "[substring(uniqueString(concat(resourceGroup().id, variables('baseUrl'))), 0, 4)]",
     "adminUsername1": "[parameters('adminUsername')]",
-    "adminPassword1": "[parameters('adminPassword')]",
     "httpPassword1": "[parameters('httpPassword')]",
     "sshKey1": "[parameters('sshKey')]",
     "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
@@ -182,9 +175,6 @@
           "adminUsername": {
             "value": "[variables('adminUsername1')]"
           },
-          "adminPassword": {
-            "value": "[variables('adminPassword1')]"
-          },
           "httpPassword": {
             "value": "[variables('httpPassword1')]"
           },
@@ -240,9 +230,6 @@
           },
           "adminUsername": {
             "value": "[variables('adminUsername1')]"
-          },
-          "adminPassword": {
-            "value": "[variables('adminPassword1')]"
           },
           "httpPassword": {
             "value": "[variables('httpPassword1')]"

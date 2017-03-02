@@ -22,13 +22,6 @@
         "description": "Admin username on all VMs."
       }
     },
-    "adminPassword": {
-      "type": "securestring",
-      "defaultValue": "",
-      "metadata": {
-        "description": "Admin password on all VMs."
-      }
-    },
     "httpPassword": {
       "type": "securestring",
       "metadata": {

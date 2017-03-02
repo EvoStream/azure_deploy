@@ -108,7 +108,6 @@
     "outputs": {
       "adminUsername": "[basics('adminUsername')]",
       "sshKey": "[basics('SSHCredentials').sshPublicKey]",
-      "adminPassword": "[steps('vmConfig').httpPassword]",
       "httpPassword": "[steps('vmConfig').httpPassword]",
       "vmSize": "[steps('vmConfig').vmSize]",
       "emsLicenseUrl": "[steps('vmConfig').emsLicenseUrl]",

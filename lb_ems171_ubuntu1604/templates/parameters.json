@@ -5,9 +5,6 @@
     "adminUsername": {
       "value": "user1234"
     },
-    "adminPassword": {
-      "value": "Pa$$word1234"
-    },
     "httpPassword": {
       "value": "Pa$$word1234"
     },
