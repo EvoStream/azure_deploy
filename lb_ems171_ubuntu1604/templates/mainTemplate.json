@@ -63,6 +63,7 @@
     },
     "initialEdgeCount": {
       "type": "int",
+      "defaultValue": 2,
       "metadata": {
         "description": "Initial number of Edge VMs (2 to 4)."
       },
@@ -71,6 +72,7 @@
     },
     "maxEdgeCount": {
       "type": "int",
+      "defaultValue": 5,
       "metadata": {
         "description": "Maximum number of Edge VMs (4 to 10)."
       },
