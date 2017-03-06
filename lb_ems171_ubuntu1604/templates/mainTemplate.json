@@ -9,6 +9,30 @@
         "description": "Size of VMs in the Origin & Edge Scale Sets and in the Streams Manager."
       }
     },
+    "publisher": {
+      "type": "string",
+      "metadata": {
+        "description": "The image publisher."
+      }
+    },
+    "offer": {
+      "type": "string",
+      "metadata": {
+        "description": "The image offer."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "The image SKU."
+      }
+    },
+    "version": {
+      "type": "string",
+      "metadata": {
+        "description": "The image version."
+      }
+    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -124,6 +148,18 @@
           "vmSize": {
             "value": "[variables('vmSize1')]"
           },
+          "publisher": {
+            "value": "[parameters('publisher')]"
+          },
+          "offer": {
+            "value": "[parameters('offer')]"
+          },
+          "sku": {
+            "value": "[parameters('sku')]"
+          },
+          "version": {
+            "value": "[parameters('version')]"
+          },
           "vnetName": {
             "value": "[variables('vnetone').name]"
           },
@@ -182,6 +218,18 @@
           },
           "vmSize": {
             "value": "[variables('vmSize1')]"
+          },
+          "publisher": {
+            "value": "[parameters('publisher')]"
+          },
+          "offer": {
+            "value": "[parameters('offer')]"
+          },
+          "sku": {
+            "value": "[parameters('sku')]"
+          },
+          "version": {
+            "value": "[parameters('version')]"
           },
           "vnetName": {
             "value": "[variables('vnetone').name]"

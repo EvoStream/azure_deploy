@@ -14,6 +14,15 @@
     "vmSize": {
       "value": "Standard_D1_v2"
     },
+    "publisher": {
+      "value": "evostream-inc"
+    },
+    "offer": {
+      "value": "ems-ubuntu-byol"
+    },
+    "sku": {
+      "value": "ems171_ubuntu1604_byol"
+    },
     "emsLicenseUrl": {
       "value": "https://raw.githubusercontent.com/EvoStream/evostream_addons/master/LICENSE"
     }

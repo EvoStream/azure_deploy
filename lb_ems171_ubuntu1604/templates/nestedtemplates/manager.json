@@ -9,6 +9,30 @@
         "description": "Size of VMs in the VM Scale Set."
       }
     },
+    "publisher": {
+      "type": "string",
+      "metadata": {
+        "description": "The image publisher."
+      }
+    },
+    "offer": {
+      "type": "string",
+      "metadata": {
+        "description": "The image offer."
+      }
+    },
+    "sku": {
+      "type": "string",
+      "metadata": {
+        "description": "The image SKU."
+      }
+    },
+    "version": {
+      "type": "string",
+      "metadata": {
+        "description": "The image version."
+      }
+    },
     "uniqueSuffix": {
       "type": "string",
       "defaultValue": "",
@@ -95,17 +119,16 @@
     "subnetName": "[parameters('subnetName')]",
     "addressPrefix": "[parameters('addressPrefix')]",
     "subnetPrefix": "[parameters('subnetPrefix')]",
-    "osType": {
-      "publisher": "evostream-inc",
-      "offer": "ems-ubuntu-byol",
-      "sku": "ems171_ubuntu1604_byol",
-      "version": "1.0.0"
+    "imageReference": {
+      "publisher": "[parameters('publisher')]",
+      "offer": "[parameters('offer')]",
+      "sku": "[parameters('sku')]",
+      "version": "[parameters('version')]"
     },
-    "imageReference": "[variables('osType')]",
     "plan": {
-      "name": "[variables('osType').sku]",
-      "publisher": "[variables('osType').publisher]",
-      "product": "[variables('osType').offer]"
+      "name": "[variables('imageReference').sku]",
+      "publisher": "[variables('imageReference').publisher]",
+      "product": "[variables('imageReference').offer]"
     },
     "sshKeyPath": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]"
   },

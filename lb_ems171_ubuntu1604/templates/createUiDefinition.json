@@ -66,7 +66,13 @@
                   "Standard_A0"
               ]
             },
-            "osPlatform": "Linux"
+            "osPlatform": "Linux",
+            "imageReference": {
+              "publisher": "evostream-inc",
+              "offer": "ems-ubuntu-byol",
+              "sku": "ems171_ubuntu1604_byol"
+            },
+            "count": 7
           },
           {
             "name": "initialEdgeCount",
@@ -172,6 +178,10 @@
       "sshKey": "[basics('SSHCredentials').sshPublicKey]",
       "httpPassword": "[steps('vmConfig').httpPassword]",
       "vmSize": "[steps('vmConfig').vmSize]",
+      "publisher": "[steps('vmConfig').vmSize.imageReference.publisher]",
+      "offer": "[steps('vmConfig').vmSize.imageReference.offer]",
+      "sku": "[steps('vmConfig').vmSize.imageReference.sku]",
+      "version": "1.0.0",
       "emsLicenseUrl": "[steps('vmConfig').emsLicenseUrl]",
       "initialEdgeCount": "[steps('vmConfig').initialEdgeCount]",
       "maxEdgeCount": "[steps('vmConfig').maxEdgeCount]",
