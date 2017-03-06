@@ -11,24 +11,28 @@
     },
     "publisher": {
       "type": "string",
+      "defaultValue": "evostream-inc",
       "metadata": {
         "description": "The image publisher."
       }
     },
     "offer": {
       "type": "string",
+      "defaultValue": "ems-ubuntu-byol",
       "metadata": {
         "description": "The image offer."
       }
     },
     "sku": {
       "type": "string",
+      "defaultValue": "ems171_ubuntu1604_byol",
       "metadata": {
         "description": "The image SKU."
       }
     },
     "version": {
       "type": "string",
+      "defaultValue": "1.0.0",
       "metadata": {
         "description": "The image version."
       }
