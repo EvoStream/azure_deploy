@@ -92,14 +92,9 @@
     "templatesFolder": "[concat(variables('baseUrl'), 'templates/')]",
     "customScriptsFolder": "[concat(variables('baseUrl'), 'customscripts/')]",
     "uniqueSuffix1": "[substring(uniqueString(concat(resourceGroup().id, variables('baseUrl'))), 0, 4)]",
-    "adminUsername1": "[parameters('adminUsername')]",
-    "httpPassword1": "[parameters('httpPassword')]",
-    "sshKey1": "[parameters('sshKey')]",
     "vmssName1": "[concat('vmss', variables('uniqueSuffix1'))]",
-    "vmSize1": "[parameters('vmSize')]",
-    "location1": "[parameters('location')]",
     "vnetone": {
-      "name": "[concat('vnetone-', variables('location1'), '-', variables('uniqueSuffix1'))]",
+      "name": "[concat('vnetone-', parameters('location'), '-', variables('uniqueSuffix1'))]",
       "addressSpacePrefix": "10.10.0.0/24",
       "subnetName": "subnet1",
       "subnetPrefix": "10.10.0.0/24"
@@ -111,7 +106,8 @@
       "apiVersion": "2016-10-01",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetone').name]",
-      "location": "[variables('location1')]",
+      "location": "[parameters('location')]",
+      "dependsOn": "[variables('nsgID')]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -122,7 +118,188 @@
           {
             "name": "[variables('vnetone').subnetName]",
             "properties": {
-              "addressPrefix": "[variables('vnetone').subnetPrefix]"
+              "addressPrefix": "[variables('vnetone').subnetPrefix]",
+              "networkSecurityGroup": {
+                "id": "[variables('nsgID')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2016-03-30",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "nsgrule_SSH",
+            "properties": {
+              "description": "Allow SSH",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "22",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_EWS",
+            "properties": {
+              "description": "Allow EWS",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8888",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_IHTTP",
+            "properties": {
+              "description": "Allow IHTTP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8080",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_JSONMETA",
+            "properties": {
+              "description": "Allow JSONMETA",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8100",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_LIVEFLV",
+            "properties": {
+              "description": "Allow LIVEFLV",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "6666",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_RTMP",
+            "properties": {
+              "description": "Allow RTMP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "1935",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 150,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_RTMPS",
+            "properties": {
+              "description": "Allow RTMPS",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4443",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 160,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_RTSP",
+            "properties": {
+              "description": "Allow RTSP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "5544",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 170,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_TCPTS",
+            "properties": {
+              "description": "Allow TCPTS",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9998",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 180,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_WSFMP4",
+            "properties": {
+              "description": "Allow WSFMP4",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8410",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 200,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_WSJSONMETA",
+            "properties": {
+              "description": "Allow WSJSONMETA",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "8210",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 210,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "nsgrule_UDPTS",
+            "properties": {
+              "description": "Allow UDPTS",
+              "protocol": "Udp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "9999",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 220,
+              "direction": "Inbound"
             }
           }
         ]
@@ -143,16 +320,16 @@
             "value": "[concat(variables('uniqueSuffix1'), 'm')]"
           },
           "adminUsername": {
-            "value": "[variables('adminUsername1')]"
+            "value": "[parameters('adminUsername')]"
           },
           "httpPassword": {
-            "value": "[variables('httpPassword1')]"
+            "value": "[parameters('httpPassword')]"
           },
           "sshKey": {
-            "value": "[variables('sshKey1')]"
+            "value": "[parameters('sshKey')]"
           },
           "vmSize": {
-            "value": "[variables('vmSize1')]"
+            "value": "[parameters('vmSize')]"
           },
           "publisher": {
             "value": "[parameters('publisher')]"
@@ -185,7 +362,7 @@
             "value": "[variables('customScriptsFolder')]"
           },
           "location": {
-            "value": "[variables('location1')]"
+            "value": "[parameters('location')]"
           }
         }
       }
@@ -211,19 +388,19 @@
             "value": "[reference('managerSetup').outputs.publicIpAddressSM.value]"
           },
           "adminUsername": {
-            "value": "[variables('adminUsername1')]"
+            "value": "[parameters('adminUsername')]"
           },
           "httpPassword": {
-            "value": "[variables('httpPassword1')]"
+            "value": "[parameters('httpPassword')]"
           },
           "sshKey": {
-            "value": "[variables('sshKey1')]"
+            "value": "[parameters('sshKey')]"
           },
           "vmssName": {
             "value": "[concat(variables('vmssName1'), 'e')]"
           },
           "vmSize": {
-            "value": "[variables('vmSize1')]"
+            "value": "[parameters('vmSize')]"
           },
           "publisher": {
             "value": "[parameters('publisher')]"
@@ -262,7 +439,7 @@
             "value": "[parameters('maxEdgeCount')]"
           },
           "location": {
-            "value": "[variables('location1')]"
+            "value": "[parameters('location')]"
           }
         }
       }
