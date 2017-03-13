@@ -100,8 +100,7 @@
       "subnetPrefix": "10.10.0.0/24"
     },
     "emsLicenseUrl1": "[parameters('emsLicenseUrl')]",
-    "nsgName": "[concat('nsg-', variables('uniqueSuffix1'))]",
-    "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+    "nsgName": "[concat('nsg-', variables('uniqueSuffix1'))]"
   },
   "resources": [
     {
@@ -287,7 +286,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetone').name]",
       "location": "[parameters('location')]",
-      "dependsOn": "[variables('nsgID')]",
+      "dependsOn": "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]",
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
@@ -300,7 +299,7 @@
             "properties": {
               "addressPrefix": "[variables('vnetone').subnetPrefix]",
               "networkSecurityGroup": {
-                "id": "[variables('nsgID')]"
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
               }
             }
           }
