@@ -99,34 +99,11 @@
       "subnetName": "subnet1",
       "subnetPrefix": "10.10.0.0/24"
     },
-    "emsLicenseUrl1": "[parameters('emsLicenseUrl')]"
+    "emsLicenseUrl1": "[parameters('emsLicenseUrl')]",
+    "nsgName": "[concat('nsg-', variables('uniqueSuffix1'))]",
+    "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
   },
   "resources": [
-    {
-      "apiVersion": "2016-10-01",
-      "type": "Microsoft.Network/virtualNetworks",
-      "name": "[variables('vnetone').name]",
-      "location": "[parameters('location')]",
-      "dependsOn": "[variables('nsgID')]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[variables('vnetone').addressSpacePrefix]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[variables('vnetone').subnetName]",
-            "properties": {
-              "addressPrefix": "[variables('vnetone').subnetPrefix]",
-              "networkSecurityGroup": {
-                "id": "[variables('nsgID')]"
-              }
-            }
-          }
-        ]
-      }
-    },
     {
       "apiVersion": "2016-03-30",
       "type": "Microsoft.Network/networkSecurityGroups",
@@ -300,6 +277,31 @@
               "access": "Allow",
               "priority": 220,
               "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2016-10-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('vnetone').name]",
+      "location": "[parameters('location')]",
+      "dependsOn": "[variables('nsgID')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('vnetone').addressSpacePrefix]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('vnetone').subnetName]",
+            "properties": {
+              "addressPrefix": "[variables('vnetone').subnetPrefix]",
+              "networkSecurityGroup": {
+                "id": "[variables('nsgID')]"
+              }
             }
           }
         ]
