@@ -286,7 +286,9 @@
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[variables('vnetone').name]",
       "location": "[parameters('location')]",
-      "dependsOn": "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkSecurityGroups/', variables('nsgName'))]"
+      ],
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
